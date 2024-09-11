@@ -1,0 +1,105 @@
+@model appdemo_prueba.ViewModel.MascotaViewModel
+@{
+    ViewData["Title"] = "Registro y Lista de Mascotas";
+}
+
+<div class="container mt-4">
+    <!-- Mensaje de éxito -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <!-- Formulario para crear/editar mascotas -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Formulario de Mascota</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Mascota" asp-action="Guardar" method="post">
+                        <input type="hidden" asp-for="FormMascota.Id" />
+                        <div class="mb-3">
+                            <label asp-for="FormMascota.Nombre" class="form-label"></label>
+                            <input asp-for="FormMascota.Nombre" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="FormMascota.Raza" class="form-label"></label>
+                            <input asp-for="FormMascota.Raza" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="FormMascota.Color" class="form-label"></label>
+                            <input asp-for="FormMascota.Color" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="FormMascota.FechaNacimiento" class="form-label"></label>
+                            <input asp-for="FormMascota.FechaNacimiento" class="form-control" type="date" />
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de mascotas -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Lista de Mascotas</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Raza</th>
+                                <th>Color</th>
+                                <th>Fecha de Nacimiento</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var mascota in Model.ListMascota)
+                            {
+                                <tr>
+                                    <td>@mascota.Nombre</td>
+                                    <td>@mascota.Raza</td>
+                                    <td>@mascota.Color</td>
+                                    <td>@mascota.FechaNacimiento.ToShortDateString()</td>
+                                    <td>
+                                        <a asp-action="Editar" asp-route-id="@mascota.Id" class="btn btn-info btn-sm">Editar</a>
+                                        <form asp-action="Eliminar" asp-controller="Mascota" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@mascota.Id" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
